@@ -12,8 +12,12 @@
   "types": "dist/index.d.ts",
   "keywords": [],
   "author": "",
+  "files": ["dist", "README.md"],
   "license": "ISC",
   "packageManager": "pnpm@10.6.5",
+  "publishConfig": {
+    "access": "public"
+  },
   "devDependencies": {
     "copyfiles": "^2.4.1",
     "prettier": "^3.5.3",
