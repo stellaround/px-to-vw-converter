@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "outDir": "dist",
+    "module": "ESNext",            // 采用 ESNext 作为模块系统
+    "moduleResolution": "Node",    // 解决方式改为 Node（适用于大多数库）
+    "target": "ESNext",
+    "declaration": true,           // 生成 .d.ts 类型声明文件
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true           // 跳过库类型检查，避免一些 ts 依赖问题
+  },
+  "include": ["src"]
+}
