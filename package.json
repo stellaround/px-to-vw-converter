@@ -1,6 +1,6 @@
 {
   "name": "@stellaround/px-to-vw-converter",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "用于给予基于ant-design-vue、vue3和vite项目的低限度的响应式。",
   "type": "module",
   "scripts": {
