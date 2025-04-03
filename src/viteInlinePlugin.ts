@@ -11,7 +11,7 @@ export default function vitePluginPxToVw(options?: {
 
   return {
     name: "vite-plugin-inline-style-px-to-vw",
-    enforce: "post",
+    enforce: "pre",
     transform(code, id) {
       // 1. 检查是否在排除的目录中**
       if (excludeDirs.some((dir) => id.includes(`/${dir}/`))) {
@@ -27,16 +27,25 @@ export default function vitePluginPxToVw(options?: {
       transformedCode = transformedCode.replace(pxRegex, (match) => {
         return convertPxToVw(match) ?? match;
       });
-
       // 3. **转换 width: 100 这种数值**
       const styleNumberRegex =
-        /(\b(?:width|height)\s*:\s*)(\d+(\.\d+)?)(?!px)/g;
-      transformedCode = transformedCode.replace(
-        styleNumberRegex,
-        (_, prefix, value) => {
-          return `${prefix}"${convertPxToVw(parseFloat(value)) ?? value}"`;
-        },
-      );
+        /(\b(?:width|height)\s*:\s*)(\d+(\.\d+)?)(?=\s*[;\n])/g;
+
+      // Vue 绑定转换成字符串，如 :width="491" → :width="'24.55vw'"
+      const vueBindRegex = /(:\b(?:width|height)\s*=\s*")(\d+(\.\d+)?)(")/g;
+
+      transformedCode = transformedCode
+        .replace(styleNumberRegex, (_, prefix, value) => {
+          return `${prefix}${convertPxToVw(parseFloat(value)) ?? value}`;
+        })
+        .replace(vueBindRegex, (_, prefix, value, _2, suffix) => {
+          const convertedValue = convertPxToVw(parseFloat(value)) ?? value;
+          return `${prefix}'${convertedValue}'${suffix}`; // 确保不会重复添加 `vw`
+        });
+
+      if (id.includes("system/user/add-or-edit")) {
+        console.log(transformedCode);
+      }
 
       return {
         code: transformedCode,
