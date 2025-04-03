@@ -43,10 +43,6 @@ export default function vitePluginPxToVw(options?: {
           return `${prefix}'${convertedValue}'${suffix}`; // 确保不会重复添加 `vw`
         });
 
-      if (id.includes("system/user/add-or-edit")) {
-        console.log(transformedCode);
-      }
-
       return {
         code: transformedCode,
         map: null,
